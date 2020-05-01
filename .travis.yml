@@ -1,0 +1,19 @@
+sudo: required
+services:
+    - docker
+before-install:
+    - docker build -t vivek/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true vivek/react-test npm test
+
+after-success:
+    - docker build -t vivek/multi-client ./client
+    - docker build -t vivek/multi-nginx ./nginx
+    - docker build -t vivek/multi-server ./server
+    - docker build -t vivek/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push vivek/multi-client
+    - docker push vivek/multi-nginx
+    - docker push vivek/multi-server
+    - docker push vivek/multi-worker
