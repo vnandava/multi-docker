@@ -2,18 +2,18 @@ sudo: required
 services:
     - docker
 before-install:
-    - docker build -t vivek/react-test -f ./client/Dockerfile.dev ./client
+    - docker build -t nvivekreddy/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true vivek/react-test npm test
+    - docker run -e CI=true nvivekreddy/react-test npm test
 
 after-success:
-    - docker build -t vivek/multi-client ./client
-    - docker build -t vivek/multi-nginx ./nginx
-    - docker build -t vivek/multi-server ./server
-    - docker build -t vivek/multi-worker ./worker
+    - docker build -t nvivekreddy/multi-client ./client
+    - docker build -t nvivekreddy/multi-nginx ./nginx
+    - docker build -t nvivekreddy/multi-server ./server
+    - docker build -t nvivekreddy/multi-worker ./worker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    - docker push vivek/multi-client:latest
-    - docker push vivek/multi-nginx:latest
-    - docker push vivek/multi-server:latest
-    - docker push vivek/multi-worker:latest
+    - docker push nvivekreddy/multi-client:latest
+    - docker push nvivekreddy/multi-nginx:latest
+    - docker push nvivekreddy/multi-server:latest
+    - docker push nvivekreddy/multi-worker:latest
